@@ -97,3 +97,4 @@ spec:
           value: "$(params.machine-type)"
         - name: aws-secrets
           value: "$(params.aws-secrets)"
+##
