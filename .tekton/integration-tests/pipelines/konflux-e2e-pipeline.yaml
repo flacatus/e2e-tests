@@ -128,3 +128,4 @@
               value: "$(tasks.test-metadata.results.job-spec)"
             - name: ocp-login-command
               value: "$(tasks.provision-rosa.results.ocp-login-command)"
+##
