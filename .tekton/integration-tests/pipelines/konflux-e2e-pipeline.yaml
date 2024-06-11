@@ -19,7 +19,7 @@
           default: 'quay.io/konflux-qe-incubator/konflux-qe-oci-storage'
           description: The ORAS container used to store all test artifacts.
       tasks:
-        - name: rosa-hcp-metadata
+      - name: rosa-hcp-metadata
         taskRef:
           resolver: git
           params:
@@ -142,3 +142,4 @@
           value: "$(params.region)"
         - name: aws-secrets
           value: "$(params.aws-secrets)"
+#############
