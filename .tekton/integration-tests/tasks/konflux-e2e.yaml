@@ -126,7 +126,7 @@ spec:
             echo -e "[INFO ] user: ${GITHUB_USERNAME_ARRAY[0]} with rate limit remaining $GH_RATE_REMAINING"
             if [[ "${GH_RATE_REMAINING}" -ge "${PREVIOUS_RATE_REMAINING}" ]];then
                 GITHUB_USER="${GITHUB_USERNAME_ARRAY[0]}"
-                GITHUB_TOKEN="${GITHUB_USERNAME_ARRAY[1]}"
+                GITHUB_TOKEN="${GITHUB_USERNAME_ARRAY[1]}"kx-d9494845ad
             fi
             PREVIOUS_RATE_REMAINING="${GH_RATE_REMAINING}"
         done
@@ -140,6 +140,13 @@ spec:
 
         mkdir -p "${HOME}/creds"
         GIT_CREDS_PATH="${HOME}/creds/file"
+      resources:
+        requests:
+          memory: "4Gi"
+          cpu: "1"
+        limits:
+          memory: "6Gi"
+          cpu: "2
         git config --global credential.helper "store --file ${GIT_CREDS_PATH}"
 
         echo "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com" > "${GIT_CREDS_PATH}"
@@ -148,3 +155,4 @@ spec:
         make ci/prepare/e2e-branch
 
         make ci/test/e2e
+#####
