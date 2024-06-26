@@ -1300,3 +1300,5 @@ func isValidPacHost(server string) bool {
 	_, err := httpClient.Get(strings.TrimSpace(server))
 	return err == nil
 }
+
+/**/
