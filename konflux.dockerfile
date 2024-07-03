@@ -36,7 +36,7 @@ RUN curl -L "https://github.com/mikefarah/yq/releases/download/v${YQ_VERSION}/yq
     chmod +x /usr/local/bin/yq && \
     yq --version
 
-FROM registry.access.redhat.com/ubi9/go-toolset:1.21.10-1
+FROM registry.access.redhat.com/ubi9/go-toolset:1.21.10-1.1719562237
 
 WORKDIR /konflux-e2e
 
