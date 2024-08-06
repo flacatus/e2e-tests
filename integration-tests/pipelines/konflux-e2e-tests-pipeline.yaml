@@ -172,6 +172,7 @@
           - name: hcp-config-secret
             value: "$(params.hcp-config-secret)"
       - name: quality-dashboard-upload
+        retries: 3
         when:
           - input: "$(tasks.test-metadata.results.test-event-type)"
             operator: in
