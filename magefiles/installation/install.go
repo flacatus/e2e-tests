@@ -160,6 +160,7 @@ func (i *InstallAppStudio) MarkMasterNodesAsSchedulable() error {
 func (i *InstallAppStudio) setInstallationEnvironments() {
 	os.Setenv("MY_GITHUB_ORG", i.LocalGithubForkOrganization)
 	os.Setenv("MY_GITHUB_TOKEN", utils.GetEnv("GITHUB_TOKEN", ""))
+	os.Setenv("DOCKER_IO_AUTH", utils.GetEnv("DOCKER_IO_AUTH", ""))
 	os.Setenv("MY_GIT_FORK_REMOTE", i.LocalForkName)
 	os.Setenv("TEST_BRANCH_ID", util.GenerateRandomString(4))
 	os.Setenv("QUAY_TOKEN", i.QuayToken)
