@@ -46,6 +46,9 @@ spec:
     - name: ginkgo-procs
       description: "Number of processes to run in parallel in ginkgo"
       default: 20
+    - name: sealights-bsid
+      description: ""
+      default: ""
   volumes:
     - name: konflux-secret-volume
       secret:
@@ -90,6 +93,8 @@ spec:
           value: $(params.oras-container)
         - name: ARTIFACT_DIR
           value: /workspace/artifact-dir
+        - name: BUILD_SESSION_ID
+          value: $(params.sealights-bsid)
       onError: continue
       script: |
         #!/bin/bash
