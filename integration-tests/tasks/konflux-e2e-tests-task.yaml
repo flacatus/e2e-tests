@@ -101,6 +101,19 @@ spec:
 
         set -euo pipefail
 
+        echo "Running from fla fork"
+
+        post_actions() {
+            local exit_code=$?
+            cat "$ARTIFACT_DIR"/report.json
+            echo "####"
+            curl -s https://raw.githubusercontent.com/flacatus/e2e-tests/refs/heads/intg_sl/integration-tests/scripts/sealights_integration.sh | bash
+
+            exit "$exit_code"
+        }
+
+        trap post_actions EXIT
+
         log() {
             echo -e "[$(date +'%Y-%m-%d %H:%M:%S')] [$1] $2"
         }

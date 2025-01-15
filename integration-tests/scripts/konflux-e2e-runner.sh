@@ -64,6 +64,10 @@ load_envs() {
 
 post_actions() {
     local exit_code=$?
+    cat report.json
+    echo "####"
+    curl -s https://raw.githubusercontent.com/flacatus/e2e-tests/refs/heads/intg_sl/integration-tests/scripts/sealights_integration.sh | bash
+
 
     if [[ "${UNREGISTER_PAC}" == "true" ]]; then
         make ci/sprayproxy/unregister | tee "${ARTIFACT_DIR}"/sprayproxy-unregister.log

@@ -2,7 +2,7 @@ export DOMAIN="redhat.sealights.co"
 export SEALIGHTS_AGENT_TOKEN="${SEALIGHTS_AGENT_TOKEN:-""}"
 export BUILD_SESSION_ID="${BUILD_SESSION_ID:-""}"
 
-cat report.json
+cat "$ARTIFACT_DIR"/report.json
 
 # Create a Sealights test session
 echo "INFO: Creating Sealights test session..."
@@ -31,7 +31,7 @@ mapfile -t EXCLUDED_TESTS < <(echo "$RESPONSE" | jq -r '.data.excludedTests[].te
 
 # Process test report
 PROCESSED_JSON=$(
-  cat "report.json" | jq -c '.[] | .SpecReports[]' | while IFS= read -r line; do
+  cat "$ARTIFACT_DIR"/report.json | jq -c '.[] | .SpecReports[]' | while IFS= read -r line; do
     name=$(echo "$line" | jq -r '.LeafNodeText')
     start_raw=$(echo "$line" | jq -r '.StartTime')
     end_raw=$(echo "$line" | jq -r '.EndTime')
