@@ -160,7 +160,6 @@ spec:
 
         git clone -b intg_sl "https://github.com/flacatus/e2e-tests.git" .
         /bin/bash -c "integration-tests/scripts/konflux-e2e-runner.sh" || true
-        /bin/bash -c "integration-tests/scripts/sealights_integration.sh" || true
 
     - name: secure-push-oci
       ref:
