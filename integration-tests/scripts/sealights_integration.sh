@@ -2,7 +2,7 @@ export DOMAIN="redhat.sealights.co"
 export SEALIGHTS_AGENT_TOKEN="${SEALIGHTS_AGENT_TOKEN:-""}"
 export BUILD_SESSION_ID="${BUILD_SESSION_ID:-""}"
 
-cat "$ARTIFACT_DIR"/report.json
+
 
 # Create a Sealights test session
 echo "INFO: Creating Sealights test session..."

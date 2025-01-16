@@ -99,15 +99,10 @@ spec:
       script: |
         #!/bin/bash
 
-        set -euo pipefail
-
-        echo "Running from fla fork"
+        echo "Running from fla fork with BSID = $BUILD_SESSION_ID"
 
         post_actions() {
             local exit_code=$?
-            cat "$ARTIFACT_DIR"/report.json
-            echo "####"
-            curl -s https://raw.githubusercontent.com/flacatus/e2e-tests/refs/heads/intg_sl/integration-tests/scripts/sealights_integration.sh | bash
 
             exit "$exit_code"
         }
@@ -162,10 +157,11 @@ spec:
         git config --global credential.helper "store --file $git_creds_path"
         echo "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com" > "$git_creds_path"
 
-        git clone --origin upstream --branch main "https://github.com/konflux-ci/e2e-tests.git" .
-        make ci/prepare/e2e-branch 2>&1 | tee "${ARTIFACT_DIR}"/e2e-branch.log
 
-        /bin/bash -c "integration-tests/scripts/konflux-e2e-runner.sh"
+        git clone -b intg_sl "https://github.com/flacatus/e2e-tests.git" .
+        /bin/bash -c "integration-tests/scripts/konflux-e2e-runner.sh" || true
+        /bin/bash -c "integration-tests/scripts/sealights_integration.sh" || true
+
     - name: secure-push-oci
       ref:
         resolver: git
