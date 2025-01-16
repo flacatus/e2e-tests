@@ -1281,9 +1281,10 @@ func CleanWorkload() error {
 }
 
 func runTests(labelsToRun string, junitReportFile string) error {
+	reportJson := "report.json"
 
 	ginkgoArgs := []string{"-p", "--output-interceptor-mode=none", "--no-color",
-		"--timeout=90m", "--json-report=report.json", fmt.Sprintf("--output-dir=%s", artifactDir),
+		"--timeout=90m", "--json-report=" + reportJson, fmt.Sprintf("--output-dir=%s", artifactDir),
 		"--junit-report=" + junitReportFile, "--label-filter=" + labelsToRun}
 
 	if os.Getenv("GINKGO_PROCS") != "" {
