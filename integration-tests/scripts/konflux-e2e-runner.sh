@@ -108,6 +108,9 @@ while IFS='|' read -r ns sa_name; do
 done <<< "$namespace_sa_names"
 
 make ci/test/e2e 2>&1 | tee "${ARTIFACT_DIR}"/e2e-tests.log
+echo "[INFO] start testing"
+set -x
+ginkgo -p --timeout=1h30m0s --json-report=report.json --output-interceptor-mode=none --label-filter=integration-service --no-color --junit-report=e2e-report.xml --procs=20 --nodes=20 --p --output-dir=/tmp/artifact-dir ./cmd --
 
 export DOMAIN="redhat.sealights.co"
 export SEALIGHTS_AGENT_TOKEN="${SEALIGHTS_AGENT_TOKEN:-""}"
