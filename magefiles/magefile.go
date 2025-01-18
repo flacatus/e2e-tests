@@ -124,7 +124,7 @@ func (ci CI) init() error {
 	rctx.Parallel = true
 	rctx.OutputDir = artifactDir
 	rctx.JUnitReport = "e2e-report.xml"
-	rctx.JSONReport = "report.json"
+	rctx.JSONReport = "e2e-report.json"
 
 	rctx.RepoName = pr.RepoName
 	rctx.JobName = jobName
