@@ -536,13 +536,28 @@ func SetupMultiPlatformTests() error {
 
 func SetEnvVarsForComponentImageDeployment(rctx *rulesengine.RuleCtx) error {
 	componentImage := os.Getenv("COMPONENT_IMAGE")
-	sp := strings.Split(componentImage, "@")
-	if len(sp) != 2 {
+
+	tag := rctx.ComponentImageTag
+
+	imageData := strings.SplitN(componentImage, "@", 2)
+	if len(imageData) != 2 {
 		return fmt.Errorf("component image ref expected in format 'quay.io/<org>/<repository>@sha256:<sha256-value>', got %s", componentImage)
 	}
-	os.Setenv(fmt.Sprintf("%s_IMAGE_REPO", rctx.ComponentEnvVarPrefix), sp[0])
-	os.Setenv(fmt.Sprintf("%s_IMAGE_TAG", rctx.ComponentEnvVarPrefix), rctx.ComponentImageTag)
+	repository := imageData[0]
+
+	if tag == "" {
+		if repoParts := strings.SplitN(repository, ":", 2); len(repoParts) == 2 {
+			repository, tag = repoParts[0], repoParts[1]
+		} else {
+			tag = fmt.Sprintf("on-pr-%s", rctx.PrCommitSha)
+		}
+	}
+
+	// Set environment variables
+	os.Setenv(fmt.Sprintf("%s_IMAGE_REPO", rctx.ComponentEnvVarPrefix), repository)
+	os.Setenv(fmt.Sprintf("%s_IMAGE_TAG", rctx.ComponentEnvVarPrefix), tag)
 	os.Setenv(fmt.Sprintf("%s_PR_OWNER", rctx.ComponentEnvVarPrefix), rctx.PrRemoteName)
 	os.Setenv(fmt.Sprintf("%s_PR_SHA", rctx.ComponentEnvVarPrefix), rctx.PrCommitSha)
+
 	return nil
 }
