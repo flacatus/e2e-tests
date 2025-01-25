@@ -46,6 +46,12 @@ spec:
     - name: ginkgo-procs
       description: "Number of processes to run in parallel in ginkgo"
       default: 20
+    - name: sealights-bsid
+      description: "WIP"
+      default: ""
+    - name: test-stage
+      description: "WIP"
+      default: "konflux-e2e"
   volumes:
     - name: konflux-secret-volume
       secret:
@@ -144,10 +150,28 @@ spec:
         git config --global credential.helper "store --file $git_creds_path"
         echo "https://${GITHUB_USER}:${GITHUB_TOKEN}@github.com" > "$git_creds_path"
 
-        git clone --origin upstream --branch main "https://github.com/konflux-ci/e2e-tests.git" .
+        git clone --origin upstream --branch sl_coverage "https://github.com/flacatus/e2e-tests.git" .
         make ci/prepare/e2e-branch 2>&1 | tee "${ARTIFACT_DIR}"/e2e-branch.log
 
         /bin/bash -c "integration-tests/scripts/konflux-e2e-runner.sh"
+    - name: sealights-reporter
+      onError: continue
+      ref:
+        resolver: git
+        params:
+          - name: url
+            value: https://github.com/flacatus/tekton-integration-catalog.git
+          - name: revision
+            value: sl_ginkgo
+          - name: pathInRepo
+            value: stepactions/sealights/upload-ginkgo-results/0.1/upload-ginkgo-results.yaml
+      params:
+        - name: ginkgo-json-report-path
+          value: /workspace/artifact-dir/e2e-report.json
+        - name: test-stage
+          value: $(params.test-stage)
+        - name: sealights-bsid
+          value: $(params.sealights-bsid)
     - name: secure-push-oci
       ref:
         resolver: git
